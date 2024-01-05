@@ -1,0 +1,12 @@
+a {
+	font-size: 30px;
+	color: black;
+}
+
+.ui-btn-text, .ui-input-text {
+	font-size: 30px !important;
+}
+
+.button1 {
+	background-color: #04AA6D;
+}
