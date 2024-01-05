@@ -18,17 +18,22 @@
 <script type="text/javascript" src="./js/TVOperation.js"></script>
 <link rel="stylesheet" href="./css/style.css" />
 <script>
-    	window.onload = function () {
-    		$('#content').height(window.screen.height * 0.75);
-    		getAnimeList();
-    	}
+   	function series() {
+		var query = decodeURIComponent(window.location.search);
+		var urlParams = new URLSearchParams(query);
+		var id = urlParams.get('id');
+		animeSeries(id);
+	}
+	window.onload = function () {
+		series();
+	}
     </script>
 </head>
 
 <body>
 	<div data-role="page" id="foo">
 		<div data-role="header" data-position="fixed" data-tap-toggle="false">
-			<h1 class="header">TVAnime</h1>
+			<h1>TVAnime</h1>
 		</div>
 		<!-- /header -->
 
@@ -38,19 +43,6 @@
 		</div>
 		<!-- /content -->
 
-		<div data-role="footer" data-id="fool" data-position="fixed"
-			data-tap-toggle="false">
-			<div id="navbar" data-role="navbar">
-				<ul>
-					<li><a id="list" href="javascript:void(0)"
-						class="ui-btn-active ui-state-persist" style="box-shadow: 0 0;">列表</a></li>
-					<li><a id="search" href="javascript:void(0)"
-						style="box-shadow: 0 0;">搜尋</a></li>
-				</ul>
-			</div>
-			<!-- /navbar -->
-		</div>
-		<!-- /footer -->
 	</div>
 	<!-- /page -->
 </body>

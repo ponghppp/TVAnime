@@ -10,7 +10,7 @@ function setFocusElement(e) {
 		case TvKeyCode.KEY_ENTER:
 			if (document.activeElement.id == 'searchBtn') {
 				var searchText = $('#searchText').val();
-				window.location.replace('search_result.html?s=' + searchText);
+				window.location.href = 'search_result.html?s=' + searchText;
 			}
             break;
         case TvKeyCode.KEY_UP:
@@ -19,7 +19,7 @@ function setFocusElement(e) {
         case TvKeyCode.KEY_LEFT:
         	var url = 'index.html';
         	if (window.location.href != url) {
-				window.location.replace(url);
+				window.location.href = url;
 			}
 	        break;
         case TvKeyCode.KEY_DOWN:
@@ -28,7 +28,7 @@ function setFocusElement(e) {
 		case TvKeyCode.KEY_RIGHT:
 			var url = 'search.html';
 			if (window.location.href != url) {
-				window.location.replace(url);
+				window.location.href = url;
 			}
             break;
     }

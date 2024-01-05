@@ -14,24 +14,13 @@ var init = function () {
     if ( backEventListener !== null ) {
         return;
     }
-    
-    // TODO:: Do your initialization job
-    console.log("init() called");
-    
+
     var backEvent = function(e) {
         if ( e.keyName == "back" ) {
             try {
-                if ( $.mobile.urlHistory.activeIndex <= 0 ) {
-                    // if first page, terminate app
-                    unregister();
-                } else {
-                    // move previous page
-                    $.mobile.urlHistory.activeIndex -= 1;
-                    $.mobile.urlHistory.clearForward();
-                    window.history.back();
-                }
+            	window.history.back();
             } catch( ex ) {
-                unregister();
+            	unregister();
             }
         }
     }
@@ -41,6 +30,7 @@ var init = function () {
     backEventListener = backEvent;
 	document.addEventListener( 'keydown', setFocusElement );
 };
+
 
 $(document).bind( 'pageinit', init );
 $(document).unload( unregister );
