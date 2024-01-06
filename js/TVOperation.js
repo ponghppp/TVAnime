@@ -45,7 +45,9 @@ function showItem(index) {
 	$("#id" + index).addClass("ui-btn-active");
 	$("#id" + index).addClass("ui-focus");
 	$("#li" + index).addClass("ui-focus");
-	document.getElementById("li" + index).scrollIntoView(false);
+	if (document.getElementById("li" + index) != undefined) {
+		document.getElementById("li" + index).scrollIntoView(false);
+	}
 }
 
 function hideItem(index) {

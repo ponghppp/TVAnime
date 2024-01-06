@@ -22,6 +22,8 @@
 		var query = decodeURIComponent(window.location.search);
 		var urlParams = new URLSearchParams(query);
 		var id = urlParams.get('id');
+		var name = urlParams.get('name');
+		$('#title').html(name);
 		animeSeries(id);
 	}
 	window.onload = function () {
@@ -33,7 +35,7 @@
 <body>
 	<div data-role="page" id="foo">
 		<div data-role="header" data-position="fixed" data-tap-toggle="false">
-			<h1>TVAnime</h1>
+			<h1 id="title">TVAnime</h1>
 		</div>
 		<!-- /header -->
 

@@ -2,6 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/TVAnime" version="1.0.0" viewmodes="maximized">
     <access origin="https://d1zquzjgwo9yb.cloudfront.net" subdomains="true"/>
     <access origin="https://anime1.me" subdomains="true"/>
+    <access origin="https://v.anime1.me/api" subdomains="true"/>
+    <access origin="https://v.anime1.me" subdomains="true"/>
+    <access origin="http://192.168.50.115:10090" subdomains="true"/>
     <tizen:application id="JQRbiWq4wS.TVAnime" package="JQRbiWq4wS" required_version="5.5"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>

@@ -1,10 +1,10 @@
 a {
-	font-size: 30px;
+	font-size: 40px;
 	color: black;
 }
 
 .ui-btn-text, .ui-input-text {
-	font-size: 30px !important;
+	font-size: 40px !important;
 }
 
 .button1 {
@@ -12,5 +12,9 @@ a {
 }
 
 .header, .ui-title {
-	font-size: 30px !important;
+	font-size: 40px !important;
+}
+
+.fullscreen {
+	width: 100%;
 }
