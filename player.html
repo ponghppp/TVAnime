@@ -21,11 +21,8 @@
 		var query = decodeURIComponent(window.location.search);
 		var urlParams = new URLSearchParams(query);
 		var apireq = urlParams.get('apireq');
-		getAnimeUrl(apireq, function (url, cookie) {
-			console.log(cookie);
-			document.cookie = cookie;
-			getAnime(url, cookie);
-			//Player.prepare(url);
+		getAnimeUrl(apireq, function (url) {
+			Player.prepare(url);
 		});
 	}
 	setTimeout(() => {
@@ -36,26 +33,7 @@
 
 <body>
 	<div data-role="page" id="foo">
-		<div data-role="header" data-position="fixed" data-tap-toggle="false">
-			<h1>TVAnime</h1>
-		</div>
-		<!-- /header -->
-
-		<video id="player" width="500" height="500"></video>
-
-		<div data-role="footer" data-id="fool" data-position="fixed"
-			data-tap-toggle="false">
-			<div id="navbar" data-role="navbar">
-				<ul>
-					<li><a id="list" href="javascript:void(0)"
-						class="ui-btn-active ui-state-persist" style="box-shadow: 0 0;">列表</a></li>
-					<li><a id="search" href="javascript:void(0)"
-						style="box-shadow: 0 0;">搜尋</a></li>
-				</ul>
-			</div>
-			<!-- /navbar -->
-		</div>
-		<!-- /footer -->
+		<video id="player" width="1920" height="1080"></video>
 	</div>
 	<!-- /page -->
 </body>

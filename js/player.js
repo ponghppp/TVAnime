@@ -55,8 +55,11 @@ Main.handleKeyDownEvents = function () {
     		console.log("DOWN");
     		break;
     	case tvKey.ENTER: // OK button
-    		console.log("OK");
-    		Player.setDisplayArea(0, 0, 1920, 1080);
+    		if (Player.state == Player.STATES.PLAYING) {
+    			Player.pause();
+    		} else {
+    			Player.play();
+    		}    		
     		break;
     	case tvKey.RETURN: // RETURN button
     		console.log("RETURN");
@@ -65,11 +68,6 @@ Main.handleKeyDownEvents = function () {
     		break;
     	case tvKey.PLAYPAUSE: // PLAYPAUSE button
     		console.log("PLAYPAUSE");
-    		if (Player.state == Player.STATES.PLAYING) {
-    			Player.pause();
-    		} else {
-    			Player.play();
-    		}    		
     		break;
     	case tvKey.PLAY: // PLAY button
     		console.log("PLAY");

@@ -5,6 +5,7 @@
     <access origin="https://v.anime1.me/api" subdomains="true"/>
     <access origin="https://v.anime1.me" subdomains="true"/>
     <access origin="http://192.168.50.115:10090" subdomains="true"/>
+    <access origin="*" subdomains="true" />
     <tizen:application id="JQRbiWq4wS.TVAnime" package="JQRbiWq4wS" required_version="5.5"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
