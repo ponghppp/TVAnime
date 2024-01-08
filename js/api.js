@@ -209,6 +209,7 @@ function animeSeriesOtherPage(url) {
         async: false,
         success: function (text) {
             var animeNames = [];
+            var animeIds = [];
             var h2s = getTagHtml(text, 'h2');
             for (var i = 0; i < h2s.length; i++) {
                 var tagAs = getTagHtml(h2s[i], 'a');
@@ -217,13 +218,19 @@ function animeSeriesOtherPage(url) {
                 }
                 var animeName = getInnerHtml(tagAs[0]);
                 animeNames.push(animeName);
+                
+                var href = getTagAttr(tagAs[0], 'href');
+                var animeId = href.substring(href.lastIndexOf('/') + 1);
+                animeIds.push(animeId);
             }
             var videos = getTagHtml(text, 'video');
             for (var i = 0; i < videos.length; i++) {
                 var video = videos[i];
                 var animeName = animeNames[i];
+                var animeId = animeIds[i];
                 var apireq = getTagAttr(video, 'data-apireq');
                 var param = {
+                	id: animeId,
                     apireq: apireq
                 };
                 var hrefParam = paramToHref(param);
@@ -251,6 +258,7 @@ function animeSeries(seriesId) {
         async: false,
         success: function (text) {
             var animeNames = [];
+            var animeIds = [];
             var h2s = getTagHtml(text, 'h2');
             for (var i = 0; i < h2s.length; i++) {
                 var tagAs = getTagHtml(h2s[i], 'a');
@@ -259,13 +267,19 @@ function animeSeries(seriesId) {
                 }
                 var animeName = getInnerHtml(tagAs[0]);
                 animeNames.push(animeName);
+                
+                var href = getTagAttr(tagAs[0], 'href');
+                var animeId = href.substring(href.lastIndexOf('/') + 1);
+                animeIds.push(animeId);
             }
             var videos = getTagHtml(text, 'video');
             for (var i = 0; i < videos.length; i++) {
                 var video = videos[i];
                 var animeName = animeNames[i];
+                var animeId = animeIds[i];
                 var apireq = getTagAttr(video, 'data-apireq');
                 var param = {
+                	id: animeId,
                     apireq: apireq
                 };
                 var hrefParam = paramToHref(param);
@@ -284,8 +298,8 @@ function animeSeries(seriesId) {
     });
 }
 
-function getAnimeUrl(apireq, callback) {
-    var url = 'http://192.168.50.115:10090/' + apireq;
+function getAnimeUrl(id, apireq, callback) {
+    var url = 'http://192.168.50.115:10090/api?id=' + id + '&apireq=' + apireq;
     $.ajax({
         type: "GET",
         url: url,
