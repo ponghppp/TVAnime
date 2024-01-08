@@ -14,26 +14,20 @@
 <script type="text/javascript" src="./js/jquery.mobile-1.3.2.js"></script>
 <script type="text/javascript" src="./js/api.js"></script>
 <script type="text/javascript" src="./js/keyTizen.js"></script>
+<script type="text/javascript" src="./js/TVOperation-player.js"></script>
+<script type="text/javascript" src="./js/video-js.min.js"></script>
 <script type="text/javascript" src="./js/player.js"></script>
 <link rel="stylesheet" href="./css/style.css" />
-<script>
-	function play() {
-		var query = decodeURIComponent(window.location.search);
-		var urlParams = new URLSearchParams(query);
-		var apireq = urlParams.get('apireq');
-		getAnimeUrl(apireq, function (url) {
-			Player.prepare(url);
-		});
-	}
-	setTimeout(() => {
-		play();
-	}, 100);
-    </script>
+<link rel="stylesheet" href="./css/video-js.min.css" />
+
 </head>
 
 <body>
 	<div data-role="page" id="foo">
-		<video id="player" width="1920" height="1080"></video>
+		<video id="player" class="video-js vjs-big-play-centered"></video>
+		<div id="loading" class="loading">
+			<span class="loader"></span>
+		</div>
 	</div>
 	<!-- /page -->
 </body>
