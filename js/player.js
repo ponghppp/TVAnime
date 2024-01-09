@@ -20,7 +20,8 @@ function play() {
 	
 	Player = videojs('player', {
 		width: document.body.clientWidth,
-		height: document.body.clientHeight,
+		//height: document.body.clientHeight,
+		height: 1080,
 		controls: true,
 		preload: "auto",
 		autoplay: true,
