@@ -61,6 +61,7 @@ Main.handleKeyDownEvents = function () {
     			Player.play();
     		} else {
     			Player.pause();
+    			recordAnime(animeId, Player.currentTime())
     		}    		
     		break;
     	case tvKey.RETURN: // RETURN button
