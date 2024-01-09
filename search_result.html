@@ -25,7 +25,7 @@
 		searchAnime(1, 1, searchText);
 	}
 	window.onload = function () {
-		$('#content').height(document.body.clientHeight * 0.9);
+		$('#content').height(document.body.clientHeight * 0.85);
 		search();
 	}
 </script>
@@ -39,7 +39,7 @@
 		</div>
 		<!-- /header -->
 
-		<div data-role="content">
+		<div id="content" data-role="content">
 			<ul id="list" data-role="listview" style="margin-top: 0;">
 			</ul>
 		</div>

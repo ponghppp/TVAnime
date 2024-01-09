@@ -25,7 +25,7 @@ function setFocusElement(e) {
 		}
 		break;
 	case TvKeyCode.KEY_DOWN:
-		if (mainfocus < item_count && mainfocus > -1) {
+		if (mainfocus < item_count - 1 && mainfocus > -1) {
 			mainfocus = mainfocus + 1;
 			hideItem(last_focus_index);
 			showItem(mainfocus);

@@ -45,13 +45,13 @@ Main.handleKeyDownEvents = function () {
     	switch(e.keyCode){
     	case tvKey.LEFT: // LEFT arrow
         	console.log("LEFT");
-        	Player.currentTime(Math.min(0, Player.currentTime() - 10));
+        	Player.currentTime(Player.currentTime() - 10);
     		break;
     	case tvKey.UP: // UP arrow
     		console.log("UP");
     		break;
     	case tvKey.RIGHT: // RIGHT arrow
-    		Player.currentTime(Math.min(Player.remainingTime(), Player.currentTime() + 10))
+    		Player.currentTime(Player.currentTime() + 10)
     		break;
     	case tvKey.DOWN: // DOWN arrow
     		console.log("DOWN");
@@ -61,7 +61,6 @@ Main.handleKeyDownEvents = function () {
     			Player.play();
     		} else {
     			Player.pause();
-    			recordAnime(animeId, Player.currentTime())
     		}    		
     		break;
     	case tvKey.RETURN: // RETURN button
@@ -70,6 +69,11 @@ Main.handleKeyDownEvents = function () {
     		break;
     	case tvKey.PLAYPAUSE: // PLAYPAUSE button
     		console.log("PLAYPAUSE");
+    		if (Player.paused()) {
+    			Player.play();
+    		} else {
+    			Player.pause();
+    		}    		
     		break;
     	default:
     		console.log("Key code : " + e.keyCode);

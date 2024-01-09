@@ -7,6 +7,7 @@ function hideLoading() {
 	$('#loadingDiv').remove();
 }
 
+
 function getAnimeList() {
 	var url = 'https://d1zquzjgwo9yb.cloudfront.net/';
 
@@ -191,13 +192,14 @@ function searchAnime(startPage, page, searchText) {
 	if (page == 1) {
 		item_count = 0;
 	}
-
+	showLoading();
 	$
 			.ajax({
 				type : "GET",
 				url : url,
-				async : false,
+				async : true,
 				success : function(text) {
+					hideLoading();
 					var articles = getTagHtml(text, 'article');
 					for (var i = 0; i < articles.length; i++) {
 						var article = articles[i];
@@ -270,12 +272,14 @@ function animeSeriesOtherPage(url) {
 function animeSeries(seriesId) {
 	var url = 'https://anime1.me/?cat=' + seriesId;
 	item_count = 0;
-
+	
+	showLoading();
 	$.ajax({
 		type : "GET",
 		url : url,
-		async : false,
+		async : true,
 		success : function(text) {
+			hideLoading();
 			var animeNames = [];
 			var animeIds = [];
 			var h2s = getTagHtml(text, 'h2');
@@ -365,25 +369,46 @@ function animeEpisode(episodeId) {
 	});
 }
 
-function getAnimeUrl(id, apireq, callback) {
+function getAnime(id, apireq, callback) {
 	var url = 'http://192.168.50.115:10090/api?id=' + id + '&apireq=' + apireq;
 	$.ajax({
 		type : "GET",
 		url : url,
 		async : true,
 		success : function(json) {
-			console.log(json);
-			var animeUrl = 'http://192.168.50.115:10090/anime.mp4';
 			var currentTime = json['currentTime'];
-			if (callback)
-				callback(animeUrl, currentTime);
+			if (callback) callback( currentTime);
 		}
 	})
 }
 
-function getAnime(apireq) {
+function getAnimeUrl(apireq) {
 	var url = 'http://192.168.50.115:10090/api?apireq=' + apireq;
 	return url;
+}
+
+function downloadAnime(apireq, callback) {
+	var listener = {
+	   onprogress: function(id, receivedSize, totalSize) {
+	     console.log('Received with id: ' + id + ', ' + receivedSize + '/' + totalSize);
+	   },
+	   onpaused: function(id) {
+	     console.log('Paused with id: ' + id);
+	   },
+	   oncanceled: function(id) {
+	     console.log('Canceled with id: ' + id);
+	   },
+	   oncompleted: function(id, path) {
+	     console.log('Completed with id: ' + id + ', path: ' + path);
+	     if (callback) callback(path);
+	   },
+	   onfailed: function(id, error) {
+	     console.log('Failed with id: ' + id + ', error name: ' + error.name);
+	   }
+	 };
+
+	var downloadRequest = new tizen.DownloadRequest(getAnime(apireq));
+	var downloadId = tizen.download.start(downloadRequest, listener);
 }
 
 function getLastPlayTime(id, callback) {

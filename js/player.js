@@ -1,4 +1,5 @@
 var animeId = 0;
+var currentTime = 0;
 
 function showLoading() {
 	var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span></div>';
@@ -18,44 +19,35 @@ function play() {
 	animeId = id;
 	
 	Player = videojs('player', {
-		sources : [ {
-			src : getAnime(apireq),
-			type: 'video/mp4'
-		} ],
-		width : document.body.clientWidth,
-		height : document.body.clientHeight,
-		controls : true
+		width: document.body.clientWidth,
+		height: document.body.clientHeight,
+		controls: true,
+		preload: "auto",
+		autoplay: true,
 	});
+		
+	Player.on("canplay", function(r) {
+		hideLoading();
+	})
 	
 	Player.on("ready", function(r) {
-		hideLoading();
 		Player.enterFullWindow();
-		getLastPlayTime(id, function (currentTime) {
-			Player.currentTime(currentTime);
-		})		
+		
+		getAnime(id, apireq, function (cTime) {
+			currentTime = cTime;
+			Player.src({ 'src': 'http://192.168.50.115:10090/anime.mp4', 'type': 'video/mp4' });
+			setTimeout(function(e) {
+				Player.currentTime(currentTime);
+			}, 500);
+		});
 	})
-
-//	getAnimeUrl(id, apireq, function(url, currentTime) {
-//		Player = videojs('player', {
-//			sources : [ {
-//				src : url
-//			} ],
-//			width : document.body.clientWidth,
-//			height : document.body.clientHeight,
-//			controls : true
-//		});
-//		Player.on("ready", function(r) {
-//			hideLoading();
-//			setTimeout(function(e) {
-//				Player.currentTime(currentTime);
-//			}, 100);
-//			Player.enterFullWindow();
-//		})
-//	});
+	
+	Player.on("pause", function(r) {
+		recordAnime(animeId, Player.currentTime())
+	})
 }
 
-showLoading();
-
 setTimeout(function(e) {
+	showLoading();
 	play();
 }, 100);
