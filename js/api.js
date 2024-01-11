@@ -374,12 +374,12 @@ function getAnime(id, apireq, callback) {
 	})
 }
 
-function getAnimeUrl(apireq) {
-	var url = 'http://192.168.50.115:10090/api?apireq=' + apireq;
+function downloadAnimeUrl(id, apireq) {
+	var url = 'http://192.168.50.115:10090/anime?id=' + id + '&apireq=' + apireq;
 	return url;
 }
 
-function downloadAnime(apireq, callback) {
+function downloadAnime(id, apireq, callback) {
 	var listener = {
 		onprogress: function (id, receivedSize, totalSize) {
 			console.log('Received with id: ' + id + ', ' + receivedSize + '/' + totalSize);
@@ -399,7 +399,12 @@ function downloadAnime(apireq, callback) {
 		}
 	};
 
-	var downloadRequest = new tizen.DownloadRequest(getAnime(apireq));
+	var downloadRequest = new tizen.DownloadRequest(downloadAnimeUrl(id, apireq));
+	var download_api_capability = tizen.systeminfo.getCapability("http://tizen.org/feature/download");
+	if (download_api_capability === false) {
+		logError("Download API is not supported on this device.");
+	    return;
+	}
 	var downloadId = tizen.download.start(downloadRequest, listener);
 }
 
@@ -413,6 +418,16 @@ function getLastPlayTime(id, callback) {
 			var currentTime = json['currentTime'];
 			if (callback) callback(currentTime);
 		}
+	})
+}
+
+function logError(error) {
+	var url = 'http://192.168.50.115:10090/error?error=' + error;
+	$.ajax({
+		type: "GET",
+		url: url,
+		async: true,
+		success: function (json) { }
 	})
 }
 

@@ -1,5 +1,4 @@
 var animeId = 0;
-var currentTime = 0;
 
 function showLoading() {
 	var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span></div>';
@@ -10,6 +9,26 @@ function hideLoading() {
 	$('#loadingDiv').remove();
 }
 
+function serverDownloadAnime(id, apireq) {
+	downloadAnime(id, apireq, function (path) {
+		Player.src({ 'src': path, 'type': 'video/mp4' });
+		getLastPlayTime(id, function (e) {
+			Player.currentTime(e);
+			Player.play();
+		})
+	});
+}
+
+function playAnime(id, apireq) {
+	getAnime(id, apireq, function (currentTime) {
+		Player.src({ 'src': 'http://192.168.50.115:10090/anime.mp4', 'type': 'video/mp4' });
+		setTimeout(function (e) {
+			Player.currentTime(currentTime);
+			Player.play();
+		}, 500);
+	});
+}
+
 function play() {
 	var query = decodeURIComponent(window.location.search);
 	var urlParams = new URLSearchParams(query);
@@ -17,38 +36,36 @@ function play() {
 	var apireq = urlParams.get('apireq');
 
 	animeId = id;
-	
+
 	Player = videojs('player', {
 		width: document.body.clientWidth,
-		//height: document.body.clientHeight,
 		height: 1080,
 		controls: true,
 		preload: "auto",
-		autoplay: true,
 	});
-		
-	Player.on("canplay", function(r) {
+
+	Player.on("canplay", function (r) {
 		hideLoading();
 	})
-	
-	Player.on("ready", function(r) {
+
+	Player.on("ready", function (r) {
 		Player.enterFullWindow();
-		
-		getAnime(id, apireq, function (cTime) {
-			currentTime = cTime;
-			Player.src({ 'src': 'http://192.168.50.115:10090/anime.mp4', 'type': 'video/mp4' });
-			setTimeout(function(e) {
-				Player.currentTime(currentTime);
-			}, 500);
-		});
+		Player.volume(1);
+		if (tizen.filesystem.getDirName == null) {
+			playAnime(id, apireq);
+		} else {
+			serverDownloadAnime(id, apireq);
+		}
 	})
-	
-	Player.on("pause", function(r) {
-		recordAnime(animeId, Player.currentTime())
+
+	Player.on("pause", function (r) {
+		if (Player.error() == null) {
+			recordAnime(animeId, Player.currentTime());
+		}
 	})
 }
 
-setTimeout(function(e) {
+setTimeout(function (e) {
 	showLoading();
 	play();
 }, 100);
