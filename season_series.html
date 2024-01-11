@@ -14,22 +14,27 @@
 <script type="text/javascript" src="./js/jquery.mobile-1.3.2.js"></script>
 <script type="text/javascript" src="./js/TVKeyValue.js"></script>
 <script type="text/javascript" src="./js/api.js"></script>
-<script type="text/javascript" src="./js/TVOperation-episode.js"></script>
+<script type="text/javascript" src="./js/bottom-bar.js"></script>
 <script type="text/javascript" src="./js/main.js"></script>
+<script type="text/javascript" src="./js/TVOperation.js"></script>
+<script type="text/javascript" src="./js/season_series.js"></script>
 <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body>
 	<div data-role="page" id="foo">
 		<div data-role="header" data-position="fixed" data-tap-toggle="false">
-			<h1 class="header">TVAnime</h1>
+			<h1 id="title">TVAnime</h1>
 		</div>
 		<!-- /header -->
-		
-		<button type="button" id="seriesBtn" class="button">全集</button>
-		<button type="button" id="episodeBtn" class="button">單集</button>
-	</div>
 
+		<div id="content" data-role="content">
+			<ul id="list" data-role="listview" style="margin-top: 0;">
+			</ul>
+		</div>
+		<!-- /content -->
+
+	</div>
 	<!-- /page -->
 </body>
 </html>

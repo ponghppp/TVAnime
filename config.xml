@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/TVAnime" version="1.0.0" viewmodes="maximized">
-    <access origin="https://d1zquzjgwo9yb.cloudfront.net" subdomains="true"/>
-    <access origin="https://anime1.me" subdomains="true"/>
-    <access origin="https://v.anime1.me/api" subdomains="true"/>
-    <access origin="https://v.anime1.me" subdomains="true"/>
-    <access origin="http://192.168.50.115:10090" subdomains="true"/>
-    <access origin="*" subdomains="true" />
+    <access origin="https://d1zquzjgwo9yb.cloudfront.net" subdomains="true"></access>
+    <access origin="https://anime1.me" subdomains="true"></access>
+    <access origin="https://v.anime1.me/api" subdomains="true"></access>
+    <access origin="https://v.anime1.me" subdomains="true"></access>
+    <access origin="http://192.168.50.115:10090" subdomains="true"></access>
+    <access origin="*" subdomains="true"></access>
     <tizen:application id="JQRbiWq4wS.TVAnime" package="JQRbiWq4wS" required_version="5.5"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
@@ -15,5 +15,5 @@
     <tizen:privilege name="http://developer.samsung.com/privilege/network.public"/>
     <tizen:privilege name="http://tizen.org/privilege/download"/>
     <tizen:profile name="tv-samsung"/>
-    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+    <tizen:setting screen-orientation="auto-rotation" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
 </widget>

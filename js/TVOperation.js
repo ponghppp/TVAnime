@@ -7,37 +7,25 @@ function setFocusElement(e) {
 	console.log("setFocusElement : keyCode : " + e.keyCode);
 	console.log("mainfocus = " + mainfocus);
 	switch (e.keyCode) {
-	case TvKeyCode.KEY_ENTER:
-		window.location.href = $("#id" + mainfocus).attr("href");
-		break;
-	case TvKeyCode.KEY_UP:
-		if (mainfocus < item_count + 1 && mainfocus > 0) {
-			mainfocus = mainfocus - 1;
-			hideItem(last_focus_index);
-			showItem(mainfocus);
-			last_focus_index = mainfocus;
-		}
-		break;
-	case TvKeyCode.KEY_LEFT:
-		var url = 'index.html';
-		if (window.location.href != url) {
-			window.location.href = url;
-		}
-		break;
-	case TvKeyCode.KEY_DOWN:
-		if (mainfocus < item_count - 1 && mainfocus > -1) {
-			mainfocus = mainfocus + 1;
-			hideItem(last_focus_index);
-			showItem(mainfocus);
-			last_focus_index = mainfocus;
-		}
-		break;
-	case TvKeyCode.KEY_RIGHT:
-		var url = 'search.html';
-		if (window.location.href != url) {
-			window.location.href = url;
-		}
-		break;
+		case TvKeyCode.KEY_ENTER:
+			window.location.href = $("#id" + mainfocus).attr("href");
+			break;
+		case TvKeyCode.KEY_UP:
+			if (mainfocus < item_count + 1 && mainfocus > 0) {
+				mainfocus = mainfocus - 1;
+				hideItem(last_focus_index);
+				showItem(mainfocus);
+				last_focus_index = mainfocus;
+			}
+			break;
+		case TvKeyCode.KEY_DOWN:
+			if (mainfocus < item_count - 1 && mainfocus > -1) {
+				mainfocus = mainfocus + 1;
+				hideItem(last_focus_index);
+				showItem(mainfocus);
+				last_focus_index = mainfocus;
+			}
+			break;
 	}
 }
 
@@ -56,8 +44,7 @@ function hideItem(index) {
 	$("#li" + index).removeClass("ui-focus");
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 	$(".ui-controlgroup-controls").attr("style", "width:50%");
 });
 
-// ui-btn-active km_focusable
