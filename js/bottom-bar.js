@@ -1,5 +1,6 @@
 var bottomBarItems = [
 	{ name: '列表', action: 'index' },
+	{ name: '記錄', action: 'record' },
 	{ name: '新番', action: 'year' },
 	{ name: '搜尋', action: 'search' }
 ];

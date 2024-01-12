@@ -8,7 +8,9 @@ function setFocusElement(e) {
 	console.log("mainfocus = " + mainfocus);
 	switch (e.keyCode) {
 		case TvKeyCode.KEY_ENTER:
-			window.location.href = $("#id" + mainfocus).attr("href");
+			if ($("#id" + mainfocus) != null) {				
+				window.location.href = $("#id" + mainfocus).attr("href");
+			} 
 			break;
 		case TvKeyCode.KEY_UP:
 			if (mainfocus < item_count + 1 && mainfocus > 0) {
