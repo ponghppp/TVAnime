@@ -50,7 +50,9 @@ function setKeyboardAction(e) {
 		case TvKeyCode.RETURN:
 			hideKeyboard();
 			$('#searchText').parent().removeClass('ui-focus');
-			addEventListeners();
+			setTimeout(function () {
+				addEventListeners();
+			}, 300)
 		case TvKeyCode.KEY_ENTER:
 			if (!isNaN(parseInt(selection))) {
 				inputElem.val(input + selection);
@@ -122,6 +124,7 @@ function setKeyboardAction(e) {
 				var nextText = getTextByIndex(nextIndex);
 				$('.btnActive').toggleClass('btnActive');
 				nextText.toggleClass('btnActive');
+				document.getElementById(nextText.attr('id')).scrollIntoView(false);
 				return
 			}
 			var nextRowIndex = rowIndex - 1 < 0 ? maxRowIndex : rowIndex - 1
@@ -135,6 +138,7 @@ function setKeyboardAction(e) {
 				var nextText = getTextByIndex(nextIndex);
 				$('.btnActive').toggleClass('btnActive');
 				nextText.toggleClass('btnActive');
+				document.getElementById(nextText.attr('id')).scrollIntoView(false);
 				return
 			}
 			var nextRowIndex = rowIndex + 1 > maxRowIndex ? 0 : rowIndex + 1

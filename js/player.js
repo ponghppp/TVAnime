@@ -7,30 +7,22 @@ function hideLoading() {
     $('#loadingDiv').remove();
 }
 
-function serverDownloadAnime(id, apireq) {
+function serverDownloadAnime(id, apireq, callback) {
     downloadAnime(id, apireq, function(path) {
         Player.src({
             'src': path,
             'type': 'video/mp4'
         });
-        getLastPlayTime(id, function(e) {
-            Player.currentTime(e);
-            Player.play();
-        })
+        callback();
     });
 }
 
-function playAnime(id, apireq) {
-    getAnime(id, apireq, function(currentTime) {
-        Player.src({
-            'src': 'http://192.168.50.115:10090/anime.mp4',
-            'type': 'video/mp4'
-        });
-        setTimeout(function(e) {
-            Player.currentTime(currentTime);
-            Player.play();
-        }, 500);
+function playAnime(id, apireq, callback) {
+	Player.src({
+        'src': 'http://192.168.50.115:10090/api?id=' + id + '&apireq=' + apireq,
+        'type': 'video/mp4'
     });
+	callback();
 }
 
 function play() {
@@ -57,11 +49,17 @@ function play() {
         Player.volume(1);
         Player.animeId = id;
         Player.animeName = name;
-        if (tizen.filesystem.getDirName == null) {
-            playAnime(id, apireq);
-        } else {
-            serverDownloadAnime(id, apireq);
-        }
+        getLastPlayTime(id, function(e) {
+        	var callback = function () {
+        		Player.currentTime(e);
+                Player.play();
+        	}
+        	if (tizen.filesystem.getDirName == null) {
+                playAnime(id, apireq, callback);
+            } else {
+                serverDownloadAnime(id, apireq, callback);
+            }
+        })
     })
 
     Player.on("pause", function(r) {

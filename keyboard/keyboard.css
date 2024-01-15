@@ -29,14 +29,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
-  aspect-ratio: 1;
+  height: 80px;
+  width: 80px;
   border-color: grey;
   border-width: 1px;
   border-style: solid;
   margin-left: 2px;
   margin-top: 2px;
-  font-size: 50px;
+  font-size: 40px;
   word-break: keep-all;
 }
 
@@ -48,14 +48,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
-  width: 200px;
+  height: 80px;
+  width: 160px;
   border-color: grey;
   border-width: 1px;
   border-style: solid;
   margin-left: 2px;
   margin-top: 2px;
-  font-size: 50px;
+  font-size: 40px;
   word-break: keep-all;
 }
 
@@ -73,11 +73,11 @@
 
 .inputText {
   margin-top: 10px;
-  font-size: 50px;
+  font-size: 40px;
   margin-left: 20px;
   margin-right: 20px;
   flex-shrink:0;
-  min-width: 120px;
+  min-width: 100px;
 }
 
 .chooseTextContainer {
@@ -93,7 +93,7 @@
 
 .chooseText {
   margin-top: 5px;
-  font-size: 40px;
+  font-size: 30px;
   margin-left: 5px;
   margin-right: 5px;
   display: flex;

@@ -399,18 +399,18 @@ function animeEpisode(episodeId) {
     });
 }
 
-function getAnime(id, apireq, callback) {
-    var url = 'http://192.168.50.115:10090/api?id=' + id + '&apireq=' + apireq;
-    $.ajax({
-        type: "GET",
-        url: url,
-        async: true,
-        success: function(json) {
-            var currentTime = json['currentTime'];
-            if (callback) callback(currentTime);
-        }
-    })
-}
+//function getAnime(id, apireq, callback) {
+//    var url = 'http://192.168.50.115:10090/api?id=' + id + '&apireq=' + apireq;
+//    $.ajax({
+//        type: "GET",
+//        url: url,
+//        async: true,
+//        success: function(json) {
+//            var currentTime = json['currentTime'];
+//            if (callback) callback(currentTime);
+//        }
+//    })
+//}
 
 function downloadAnimeUrl(id, apireq) {
     var url = 'http://192.168.50.115:10090/anime?id=' + id + '&apireq=' + apireq;
