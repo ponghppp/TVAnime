@@ -9,23 +9,22 @@ var unregister = function () {
     }
 }
 
+function backEvent(e) {
+    if (e.keyName == "back") {
+        try {
+            window.history.back();
+        } catch (ex) {
+            unregister();
+        }
+    }
+}
+
 //Initialize function
 var init = function () {
     // register once
     if (backEventListener !== null) {
         return;
     }
-
-    var backEvent = function (e) {
-        if (e.keyName == "back") {
-            try {
-                window.history.back();
-            } catch (ex) {
-                unregister();
-            }
-        }
-    }
-
     // add eventListener for tizenhwkey (Back Button)
     document.addEventListener('tizenhwkey', backEvent);
     backEventListener = backEvent;
