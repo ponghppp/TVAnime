@@ -1,49 +1,40 @@
-var last_focus_index = 0;
-var mainfocus = 0;
-var item_count = 0;
-var button_count = 3;
+function removeEventListeners() {
+	if (keyDownEventListener != null) {
+		document.removeEventListener('keydown', keyDownEventListener);
+		keyDownEventListener = null;
+	}
+	if (barEventListener !== null) {
+		document.removeEventListener('keydown', barEventListener);
+		barEventListener = null;
+	}
+	if (backEventListener != null) {
+		document.removeEventListener('tizenhwkey', backEventListener);
+		backEventListener = null;
+	}
+}
+
+function search() {
+	var searchText = $('#searchText').val();
+	window.location.href = 'search_result.html?s=' + searchText;
+}
 
 function setFocusElement(e) {
-	console.log("setFocusElement : keyCode : " + e.keyCode);
-	console.log("mainfocus = " + mainfocus);
 	switch (e.keyCode) {
 		case TvKeyCode.KEY_ENTER:
 			if (document.activeElement.id == 'searchBtn') {
-				var searchText = $('#searchText').val();
-				window.location.href = 'search_result.html?s=' + searchText;
+				search();
 			}
 			break;
 		case TvKeyCode.KEY_UP:
-			$('#searchText').focus();
+			$('#searchText').blur();
+			$('#searchText').parent().addClass('ui-focus');
+			showKeyboard();
+			removeEventListeners();
+			document.addEventListener('keydown', setKeyboardAction);
+			keyDownEventListener = setKeyboardAction;
 			break;
-
 		case TvKeyCode.KEY_DOWN:
 			$('#searchBtn').focus();
 			break;
 	}
 }
-
-function showItem(index) {
-	$("#id" + index).addClass("ui-btn-active");
-	$("#id" + index).addClass("ui-focus");
-	$("#li" + index).addClass("ui-focus");
-}
-
-function hideItem(index) {
-	$("#id" + index).removeClass("ui-btn-active");
-	$("#id" + index).removeClass("ui-focus");
-	$("#li" + index).removeClass("ui-focus");
-	if ((index == item_count - 1) && $(".ui-btn-active").attr("id") && parseInt($(".ui-btn-active").attr("id").substr(2, 1)) > item_count - 1) {
-		$(".ui-btn-active").removeClass("ui-btn-active");
-	}
-}
-
-$(document).ready(function () {
-	console.log("page load complete!!!");
-	item_count = $("ul[data-role='listview']").find("a").length;
-	console.log("li count = " + item_count);
-	showItem(0);
-	$(".ui-controlgroup-controls").attr("style", "width:50%");
-});
-
-//ui-btn-active km_focusable
