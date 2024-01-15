@@ -55,3 +55,11 @@ li {
         transform: rotate(360deg);
     }
     } 
+   
+.vjs-time-divider {
+ display: block !important;
+}
+
+.video-js .vjs-duration, .vjs-no-flex .vjs-duration, .video-js .vjs-current-time {
+    display: block !important;
+}`

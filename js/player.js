@@ -45,8 +45,9 @@ function play() {
         height: 1080,
         controls: true,
         preload: "auto",
+        fluid: true
     });
-
+    
     Player.on("canplay", function(r) {
         hideLoading();
     })
@@ -54,6 +55,8 @@ function play() {
     Player.on("ready", function(r) {
         Player.enterFullWindow();
         Player.volume(1);
+        Player.animeId = id;
+        Player.animeName = name;
         if (tizen.filesystem.getDirName == null) {
             playAnime(id, apireq);
         } else {
@@ -63,7 +66,7 @@ function play() {
 
     Player.on("pause", function(r) {
         if (Player.error() == null) {
-            recordAnime(id, name, Player.currentTime());
+            recordAnime(id, name, Player.currentTime(), Player.remainingTime());
         }
     })
 }

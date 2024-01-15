@@ -79,6 +79,9 @@ function keyDownActions(e) {
 			break;
 		case tvKey.RETURN: // RETURN button
 			console.log("RETURN");
+			 if (Player && Player.error() == null) {
+	            recordAnime(Player.animeId, Player.animeName, Player.currentTime(), Player.remainingTime());
+	        }
 			window.history.back();
 			break;
 		case tvKey.PLAYPAUSE: // PLAYPAUSE button

@@ -57,9 +57,15 @@ function paramToHref(param) {
     return href;
 }
 
-function addToList(idx, href, text) {
+function addToList(idx, href, text, percentage) {
+	var liStyle = '';
+	var aStyle = '';
+	if (percentage) {
+		liStyle = 'style="background: linear-gradient(90deg, #FFC0CB ' + Math.ceil(percentage) + '%, #FFFFFF 0%);"';
+		aStyle = 'color: purple;';
+	} 
     $('#list').append(
-        '<li id="li' + idx + '"><a id="id' + idx + '" href="' + href + '" style="box-shadow: 0 0;">' + text + '</a></li>')
+        '<li id="li' + idx + '"' + liStyle + '><a id="id' + idx + '" href="' + href + '" style="box-shadow: 0 0;' + aStyle + '">' + text + '</a></li>')
 }
 
 function getTagHtml(html, tag) {
@@ -276,45 +282,53 @@ function animeSeries(seriesId) {
         url: url,
         async: true,
         success: function(text) {
-            hideLoading();
-            var animeNames = [];
-            var animeIds = [];
-            var h2s = getTagHtml(text, 'h2');
-            for (var i = 0; i < h2s.length; i++) {
-                var tagAs = getTagHtml(h2s[i], 'a');
-                if (tagAs.length == 0) {
-                    continue;
-                }
-                var animeName = getInnerHtml(tagAs[0]);
-                animeNames.push(animeName);
-
-                var href = getTagAttr(tagAs[0], 'href', ' ');
-                var animeId = href.substring(href.lastIndexOf('/') + 1);
-                animeIds.push(animeId);
-            }
-            var videos = getTagHtml(text, 'video');
-            for (var i = 0; i < videos.length; i++) {
-                var video = videos[i];
-                var animeName = animeNames[i];
-                var animeId = animeIds[i];
-                var apireq = getTagAttr(video, 'data-apireq', ' ');
-                var param = {
-                    id: animeId,
-                    name: animeName,
-                    apireq: apireq
-                };
-                var hrefParam = paramToHref(param);
-                addToList(i, 'player.html' + hrefParam, animeName);
-            }
-            item_count += videos.length;
-            if (text.includes('nav-previous')) {
-                var navDiv = getTagHtmlWithFirstAttr(text, 'div',
-                    'class="nav-previous"');
-                var tagAs = getTagHtml(navDiv[0], 'a');
-                var href = getTagAttr(tagAs[0], 'href', ' ');
-                animeSeriesOtherPage(href);
-            }
-            showItem(0);
+        	getAnimeRecordList(function (records) {
+	            hideLoading();	            
+	            var animeNames = [];
+	            var animeIds = [];
+	            var h2s = getTagHtml(text, 'h2');
+	            for (var i = 0; i < h2s.length; i++) {
+	                var tagAs = getTagHtml(h2s[i], 'a');
+	                if (tagAs.length == 0) {
+	                    continue;
+	                }
+	                var animeName = getInnerHtml(tagAs[0]);
+	                animeNames.push(animeName);
+	
+	                var href = getTagAttr(tagAs[0], 'href', ' ');
+	                var animeId = href.substring(href.lastIndexOf('/') + 1);
+	                animeIds.push(animeId);
+	            }
+	            var videos = getTagHtml(text, 'video');
+	            for (var i = 0; i < videos.length; i++) {
+	                var video = videos[i];
+	                var animeName = animeNames[i];
+	                var animeId = animeIds[i];
+	                var apireq = getTagAttr(video, 'data-apireq', ' ');
+	                var param = {
+	                    id: animeId,
+	                    name: animeName,
+	                    apireq: apireq
+	                };
+	                var hrefParam = paramToHref(param);
+	                
+	                var percentage = null;
+	                var record = records.find(a => a['animeId'] == animeId);
+	                if (record) {
+	                	percentage = (parseInt(record['currentTime']) / (parseInt(record['currentTime']) + parseInt(record['remainingTime']))) * 100;
+	                }
+	                addToList(i, 'player.html' + hrefParam, animeName, percentage);	
+	            }
+	            item_count += videos.length;
+	            if (text.includes('nav-previous')) {
+	                var navDiv = getTagHtmlWithFirstAttr(text, 'div',
+	                    'class="nav-previous"');
+	                var tagAs = getTagHtml(navDiv[0], 'a');
+	                var href = getTagAttr(tagAs[0], 'href', ' ');
+	                animeSeriesOtherPage(href);
+	            }
+	            showItem(0);
+            });
         }
     });
 }
@@ -361,6 +375,12 @@ function animeEpisode(episodeId) {
                 }
                 var animeName = getInnerHtml(tagAs[0]);
                 animeNames.push(animeName);
+            }
+            if (animeNames.length == 0) {
+        	 for (var i = 0; i < h2s.length; i++) {
+                 var animeName = getInnerHtml(h2s[i]);
+                 animeNames.push(animeName);
+             }
             }
             var videos = getTagHtml(text, 'video');
             for (var i = 0; i < videos.length; i++) {
@@ -449,8 +469,8 @@ function logError(error) {
     })
 }
 
-function recordAnime(id, name, currentTime) {
-    var url = 'http://192.168.50.115:10090/record?id=' + id + '&name=' + name + '&currentTime=' + currentTime;
+function recordAnime(id, name, currentTime, remainingTime) {
+    var url = 'http://192.168.50.115:10090/record?id=' + id + '&name=' + name + '&currentTime=' + currentTime + '&remainingTime=' + remainingTime;
     $.ajax({
         type: "GET",
         url: url,
@@ -464,7 +484,7 @@ function getSeasons() {
     var currentMonth = new Date().getMonth() + 1;
     var seasonsConst = ['冬', '春', '夏', '秋'];
     var allSeasons = [];
-    var yearsToGet = 3;
+    var yearsToGet = 10;
     var currentSeasonIdx = Math.ceil(currentMonth / 3) - 1;
     allSeasons.push({
         year: currentYear,
@@ -503,7 +523,7 @@ function getSeasonAnime(year, season) {
     })
 }
 
-function getAnimeRecord() {
+function getAnimeRecordList(callback) {
     var url = 'http://192.168.50.115:10090/getRecord';
     $.ajax({
         type: "GET",
@@ -511,16 +531,36 @@ function getAnimeRecord() {
         async: true,
         success: function(json) {
             var records = json['record'];
-            for (var i = 0; i < records.length; i++) {
-                var record = records[i];
-                var param = {
-                    id: record.animeId,
-                }
-                var href = paramToHref(param);
-                addToList(i, 'episode.html' + href, record.animeName);
-            }
-            showItem(0);
-            item_count = records.length;
+            callback(records);
+        }
+    })
+}
+
+function getAnimeRecord() {
+    var url = 'http://192.168.50.115:10090/getRecord';
+    $.ajax({
+        type: "GET",
+        url: url,
+        async: true,
+        success: function(json) {
+        	getAnimeRecordList(function (rs) {
+	            var records = json['record'].reverse();
+	            for (var i = 0; i < records.length; i++) {
+	                var record = records[i];
+	                var param = {
+	                    id: record.animeId,
+	                }
+	                var href = paramToHref(param);
+	                var r = rs.find(a => a['animeId'] == record.animeId);
+	                var percentage = null;
+	                if (r) {
+	                	percentage = (parseInt(r['currentTime']) / (parseInt(r['currentTime']) + parseInt(r['remainingTime']))) * 100;
+	                } 
+	                addToList(i, 'episode.html' + href, record.animeName, percentage);
+	            }
+	            showItem(0);
+	            item_count = records.length;
+        	});
         }
     })
 }
