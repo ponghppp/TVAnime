@@ -1,5 +1,5 @@
 function showLoading() {
-    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span></div>';
+    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span><span id="loadingProgress"></span></div>';
     $('body').append(loadingDiv);
 }
 
@@ -7,14 +7,18 @@ function hideLoading() {
     $('#loadingDiv').remove();
 }
 
-function serverDownloadAnime(id, apireq, callback) {
-    downloadAnime(id, apireq, function(path) {
+function serverDownloadAnime(id, apireq, callback, progress) {
+    var success = function(path) {
         Player.src({
             'src': path,
             'type': 'video/mp4'
         });
         callback();
-    });
+    };
+    var progress = function(percentage) {
+        $('#loadingProgress').html(percentage + '%');
+    };
+    downloadAnime(id, apireq, success, progress);
 }
 
 function playAnime(id, apireq, callback) {

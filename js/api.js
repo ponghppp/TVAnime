@@ -1,5 +1,5 @@
 function showLoading() {
-    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span></div>';
+    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span><span id="loadingProgress"></span></div>';
     $('body').append(loadingDiv);
 }
 
@@ -417,9 +417,10 @@ function downloadAnimeUrl(id, apireq) {
     return url;
 }
 
-function downloadAnime(id, apireq, callback) {
+function downloadAnime(id, apireq, callback, progress) {
     var listener = {
         onprogress: function(id, receivedSize, totalSize) {
+            progress(parseInt(receivedSize) / parseInt(totalSize) * 100);
             console.log('Received with id: ' + id + ', ' + receivedSize + '/' + totalSize);
         },
         onpaused: function(id) {
