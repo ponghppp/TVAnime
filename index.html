@@ -20,6 +20,19 @@
 	<script>
 		window.onload = function () {
 			$('#content').height(document.body.clientHeight * 0.75);
+			if (tizen.filesystem.listDirectory) {
+				var success = function (s) {
+					var dump = function () { }
+					for (var i = 0; i < s.length; i++) {
+						tizen.filesystem.deleteFile('downloads/' + s[i], dump, dump);
+					}
+				}
+				var error = function (e) {
+					console.log(e);
+					logError(e);
+				}
+				tizen.filesystem.listDirectory('downloads', success, error);
+			}
 			getAnimeList();
 		}
 	</script>

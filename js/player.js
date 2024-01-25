@@ -1,5 +1,5 @@
 function showLoading() {
-    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span><span id="loadingProgress"></span></div>';
+    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span><p id="loadingProgress"></p></div>';
     $('body').append(loadingDiv);
 }
 
@@ -58,12 +58,12 @@ function play() {
         		Player.currentTime(e);
                 Player.play();
         	}
-        	if (tizen.filesystem.getDirName == null) {
+            if (tizen.filesystem.getDirName == null) {
                 playAnime(id, apireq, callback);
             } else {
                 serverDownloadAnime(id, apireq, callback);
             }
-        })
+        });
     })
 
     Player.on("pause", function(r) {

@@ -18,22 +18,6 @@ Main.onLoad = function () {
 	keyDownEventListener = keyDownActions;
 }
 
-$(window).on('beforeunload', function () {
-	if (tizen.filesystem.listDirectory) {
-		var success = function (s) {
-			var dump = function () { }
-			for (var i = 0; i < s.length; i++) {
-				tizen.filesystem.deleteFile('downloads/' + s[i], dump, dump);
-			}
-		}
-		var error = function (e) {
-			console.log(e);
-			logError(e);
-		}
-		tizen.filesystem.listDirectory('downloads', success, error);
-	}
-});
-
 // called when application has closed
 Main.onUnload = function () {
 	console.log("Main.onUnload()");

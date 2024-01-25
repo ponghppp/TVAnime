@@ -1,5 +1,5 @@
 function showLoading() {
-    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span><span id="loadingProgress"></span></div>';
+    var loadingDiv = '<div id="loadingDiv" class="loading"><span class="loader"></span><p id="loadingProgress"></p></div>';
     $('body').append(loadingDiv);
 }
 
@@ -15,7 +15,7 @@ function getAnimeList() {
         type: "GET",
         url: url,
         async: true,
-        success: function(data) {
+        success: function (data) {
             hideLoading();
             var maxIdx = 100;
             var idx = 0;
@@ -58,12 +58,12 @@ function paramToHref(param) {
 }
 
 function addToList(idx, href, text, percentage) {
-	var liStyle = '';
-	var aStyle = '';
-	if (percentage) {
-		liStyle = 'style="background: linear-gradient(90deg, #FFC0CB ' + Math.ceil(percentage) + '%, #FFFFFF 0%);"';
-		aStyle = 'color: purple;';
-	} 
+    var liStyle = '';
+    var aStyle = '';
+    if (percentage) {
+        liStyle = 'style="background: linear-gradient(90deg, #FFC0CB ' + Math.ceil(percentage) + '%, #FFFFFF 0%);"';
+        aStyle = 'color: purple;';
+    }
     $('#list').append(
         '<li id="li' + idx + '"' + liStyle + '><a id="id' + idx + '" href="' + href + '" style="box-shadow: 0 0;' + aStyle + '">' + text + '</a></li>')
 }
@@ -195,7 +195,7 @@ function searchAnime(startPage, page, searchText) {
             type: "GET",
             url: url,
             async: true,
-            success: function(text) {
+            success: function (text) {
                 hideLoading();
                 var articles = getTagHtml(text, 'article');
                 for (var i = 0; i < articles.length; i++) {
@@ -230,7 +230,7 @@ function animeSeriesOtherPage(url) {
             type: "GET",
             url: url,
             async: true,
-            success: function(text) {
+            success: function (text) {
                 var animeNames = [];
                 var animeIds = [];
                 var h2s = getTagHtml(text, 'h2');
@@ -281,53 +281,53 @@ function animeSeries(seriesId) {
         type: "GET",
         url: url,
         async: true,
-        success: function(text) {
-        	getAnimeRecordList(function (records) {
-	            hideLoading();	            
-	            var animeNames = [];
-	            var animeIds = [];
-	            var h2s = getTagHtml(text, 'h2');
-	            for (var i = 0; i < h2s.length; i++) {
-	                var tagAs = getTagHtml(h2s[i], 'a');
-	                if (tagAs.length == 0) {
-	                    continue;
-	                }
-	                var animeName = getInnerHtml(tagAs[0]);
-	                animeNames.push(animeName);
-	
-	                var href = getTagAttr(tagAs[0], 'href', ' ');
-	                var animeId = href.substring(href.lastIndexOf('/') + 1);
-	                animeIds.push(animeId);
-	            }
-	            var videos = getTagHtml(text, 'video');
-	            for (var i = 0; i < videos.length; i++) {
-	                var video = videos[i];
-	                var animeName = animeNames[i];
-	                var animeId = animeIds[i];
-	                var apireq = getTagAttr(video, 'data-apireq', ' ');
-	                var param = {
-	                    id: animeId,
-	                    name: animeName,
-	                    apireq: apireq
-	                };
-	                var hrefParam = paramToHref(param);
-	                
-	                var percentage = null;
-	                var record = records.find(a => a['animeId'] == animeId);
-	                if (record) {
-	                	percentage = (parseInt(record['currentTime']) / (parseInt(record['currentTime']) + parseInt(record['remainingTime']))) * 100;
-	                }
-	                addToList(i, 'player.html' + hrefParam, animeName, percentage);	
-	            }
-	            item_count += videos.length;
-	            if (text.includes('nav-previous')) {
-	                var navDiv = getTagHtmlWithFirstAttr(text, 'div',
-	                    'class="nav-previous"');
-	                var tagAs = getTagHtml(navDiv[0], 'a');
-	                var href = getTagAttr(tagAs[0], 'href', ' ');
-	                animeSeriesOtherPage(href);
-	            }
-	            showItem(0);
+        success: function (text) {
+            getAnimeRecordList(function (records) {
+                hideLoading();
+                var animeNames = [];
+                var animeIds = [];
+                var h2s = getTagHtml(text, 'h2');
+                for (var i = 0; i < h2s.length; i++) {
+                    var tagAs = getTagHtml(h2s[i], 'a');
+                    if (tagAs.length == 0) {
+                        continue;
+                    }
+                    var animeName = getInnerHtml(tagAs[0]);
+                    animeNames.push(animeName);
+
+                    var href = getTagAttr(tagAs[0], 'href', ' ');
+                    var animeId = href.substring(href.lastIndexOf('/') + 1);
+                    animeIds.push(animeId);
+                }
+                var videos = getTagHtml(text, 'video');
+                for (var i = 0; i < videos.length; i++) {
+                    var video = videos[i];
+                    var animeName = animeNames[i];
+                    var animeId = animeIds[i];
+                    var apireq = getTagAttr(video, 'data-apireq', ' ');
+                    var param = {
+                        id: animeId,
+                        name: animeName,
+                        apireq: apireq
+                    };
+                    var hrefParam = paramToHref(param);
+
+                    var percentage = null;
+                    var record = records.find(a => a['animeId'] == animeId);
+                    if (record) {
+                        percentage = (parseInt(record['currentTime']) / (parseInt(record['currentTime']) + parseInt(record['remainingTime']))) * 100;
+                    }
+                    addToList(i, 'player.html' + hrefParam, animeName, percentage);
+                }
+                item_count += videos.length;
+                if (text.includes('nav-previous')) {
+                    var navDiv = getTagHtmlWithFirstAttr(text, 'div',
+                        'class="nav-previous"');
+                    var tagAs = getTagHtml(navDiv[0], 'a');
+                    var href = getTagAttr(tagAs[0], 'href', ' ');
+                    animeSeriesOtherPage(href);
+                }
+                showItem(0);
             });
         }
     });
@@ -340,7 +340,7 @@ function animeSeriesFromEpisode(episodeId) {
         type: "GET",
         url: url,
         async: true,
-        success: function(text) {
+        success: function (text) {
             var catIndex = text.indexOf('cat=');
             var firstQuote = text.indexOf('"', catIndex);
             var seriesId = text.substring(catIndex + 4, firstQuote);
@@ -365,7 +365,7 @@ function animeEpisode(episodeId) {
         type: "GET",
         url: url,
         async: true,
-        success: function(text) {
+        success: function (text) {
             var animeNames = [];
             var h2s = getTagHtml(text, 'h2');
             for (var i = 0; i < h2s.length; i++) {
@@ -377,10 +377,10 @@ function animeEpisode(episodeId) {
                 animeNames.push(animeName);
             }
             if (animeNames.length == 0) {
-        	 for (var i = 0; i < h2s.length; i++) {
-                 var animeName = getInnerHtml(h2s[i]);
-                 animeNames.push(animeName);
-             }
+                for (var i = 0; i < h2s.length; i++) {
+                    var animeName = getInnerHtml(h2s[i]);
+                    animeNames.push(animeName);
+                }
             }
             var videos = getTagHtml(text, 'video');
             for (var i = 0; i < videos.length; i++) {
@@ -419,21 +419,21 @@ function downloadAnimeUrl(id, apireq) {
 
 function downloadAnime(id, apireq, callback, progress) {
     var listener = {
-        onprogress: function(id, receivedSize, totalSize) {
-            progress(parseInt(receivedSize) / parseInt(totalSize) * 100);
+        onprogress: function (id, receivedSize, totalSize) {
+            progress(parseInt(parseInt(receivedSize) / parseInt(totalSize) * 100));
             console.log('Received with id: ' + id + ', ' + receivedSize + '/' + totalSize);
         },
-        onpaused: function(id) {
+        onpaused: function (id) {
             console.log('Paused with id: ' + id);
         },
-        oncanceled: function(id) {
+        oncanceled: function (id) {
             console.log('Canceled with id: ' + id);
         },
-        oncompleted: function(id, path) {
+        oncompleted: function (id, path) {
             console.log('Completed with id: ' + id + ', path: ' + path);
             if (callback) callback(path);
         },
-        onfailed: function(id, error) {
+        onfailed: function (id, error) {
             console.log('Failed with id: ' + id + ', error name: ' + error.name);
         }
     };
@@ -453,7 +453,7 @@ function getLastPlayTime(id, callback) {
         type: "GET",
         url: url,
         async: true,
-        success: function(json) {
+        success: function (json) {
             var currentTime = json['currentTime'];
             if (callback) callback(currentTime);
         }
@@ -466,7 +466,7 @@ function logError(error) {
         type: "GET",
         url: url,
         async: true,
-        success: function(json) {}
+        success: function (json) { }
     })
 }
 
@@ -476,7 +476,7 @@ function recordAnime(id, name, currentTime, remainingTime) {
         type: "GET",
         url: url,
         async: true,
-        success: function(json) {}
+        success: function (json) { }
     })
 }
 
@@ -506,7 +506,7 @@ function getSeasonAnime(year, season) {
         type: "GET",
         url: url,
         async: true,
-        success: function(text) {
+        success: function (text) {
             var tagAs = getTagHtmlWithFirstAttr(text, 'a', 'href="/?cat=');
             for (var i = 0; i < tagAs.length; i++) {
                 var id = getTagAttr(tagAs[i], 'href', '"').split('=')[1];
@@ -530,7 +530,7 @@ function getAnimeRecordList(callback) {
         type: "GET",
         url: url,
         async: true,
-        success: function(json) {
+        success: function (json) {
             var records = json['record'];
             callback(records);
         }
@@ -543,25 +543,25 @@ function getAnimeRecord() {
         type: "GET",
         url: url,
         async: true,
-        success: function(json) {
-        	getAnimeRecordList(function (rs) {
-	            var records = json['record'].reverse();
-	            for (var i = 0; i < records.length; i++) {
-	                var record = records[i];
-	                var param = {
-	                    id: record.animeId,
-	                }
-	                var href = paramToHref(param);
-	                var r = rs.find(a => a['animeId'] == record.animeId);
-	                var percentage = null;
-	                if (r) {
-	                	percentage = (parseInt(r['currentTime']) / (parseInt(r['currentTime']) + parseInt(r['remainingTime']))) * 100;
-	                } 
-	                addToList(i, 'episode.html' + href, record.animeName, percentage);
-	            }
-	            showItem(0);
-	            item_count = records.length;
-        	});
+        success: function (json) {
+            getAnimeRecordList(function (rs) {
+                var records = json['record'].reverse();
+                for (var i = 0; i < records.length; i++) {
+                    var record = records[i];
+                    var param = {
+                        id: record.animeId,
+                    }
+                    var href = paramToHref(param);
+                    var r = rs.find(a => a['animeId'] == record.animeId);
+                    var percentage = null;
+                    if (r) {
+                        percentage = (parseInt(r['currentTime']) / (parseInt(r['currentTime']) + parseInt(r['remainingTime']))) * 100;
+                    }
+                    addToList(i, 'episode.html' + href, record.animeName, percentage);
+                }
+                showItem(0);
+                item_count = records.length;
+            });
         }
     })
 }

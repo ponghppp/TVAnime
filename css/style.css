@@ -63,4 +63,8 @@ li {
 
 .video-js .vjs-duration, .vjs-no-flex .vjs-duration, .video-js .vjs-current-time {
     display: block !important;
-}`
+}
+
+#loadingProgress {
+	font-size: 40px !important;
+}
